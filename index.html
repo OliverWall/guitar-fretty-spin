@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Фретти-Спин</title>
+    <title>Фретти-Спин - гитарный рандомайзер заданий для тернировки гамм - (Guitar fretty spin)</title>
+    <meta name="description" content="Фретти-Спин (Guitar Fretty Spin) генерирует случайные задания для отработки гамм. Просто выбери настройки, крутани рулетку — и получи задание" />
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -89,13 +90,31 @@
             margin-top: 10px;
             font-size: 14px;
         }
+        .footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            font-size: 14px;
+            color: #666;
+            text-align: center;
+            border-top: 1px solid #eee;
+        }
+
+        .footer-link {
+            color: #007bff;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-link:hover {
+            color: #0056b3;
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Фретти-Спин</h1>
-        <p class="description">Выбери количество струн и ладов, укажи диапазон струн (например, 3 или 2-4), затем нажми на кнопку, чтобы получить задание для тренировки гаммы:</p>
-
+        <p class="description">Генерирует случайные задания для отработки гамм. </br/> Просто выбери настройки, крутани рулетку — и получи задание</p>
         <form id="guitarForm">
             <div class="form-group">
                 <div class="form-row">
@@ -123,6 +142,15 @@
             <p id="result"></p>
             <p id="error" class="error"></p>
         </form>
+        <footer class="footer">
+            Обратная связь и предложения: 
+            <br/>
+            <a class="footer-link" href="mailto:smyagkov94@gmail.com">Email</a>
+            | 
+            <a class="footer-link" href="https://vk.com/slava_myagkov" target="_blank">VK</a> 
+            |
+            <a class="footer-link" href="https://github.com/OliverWall/guitar-fretty-spin/issues" target="_blank">Github</a>
+        </footer>
     </div>
 
     <script>
@@ -140,6 +168,8 @@
             const stringRange = document.getElementById('stringRange').value.trim();
             const errorElement = document.getElementById('error');
 
+             errorElement.innerText = '';
+
             if (!/^\d+(-\d+)?$/.test(stringRange)) {
                 errorElement.innerText = 'Введите корректный номер струны (например, 3) или диапазон (например, 2-4).';
                 return;
@@ -155,7 +185,10 @@
             const randomString = Math.floor(Math.random() * (maxString - minString + 1)) + minString;
             const randomFret = Math.floor(Math.random() * (numberOfFrets + 1));
 
-            document.getElementById('result').innerText = `Струна: ${randomString}, Лад: ${randomFret}`;
+            const scales = ['минор', 'мажор'];
+            const randomScale = scales[Math.floor(Math.random() * scales.length)];
+
+            document.getElementById('result').innerText = `Струна: ${randomString}, Лад: ${randomFret}, Гамма: ${randomScale}`;
         };
     </script>
 </body>
