@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Фретти-Спин</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        h1 {
+            color: #444;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+        .container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 100%;
+            max-width: 400px; /* Оптимальная ширина для мобилок */
+        }
+        .description {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .form-row {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            text-align: left;
+        }
+        label {
+            font-size: 14px;
+            color: #555;
+        }
+        select, input {
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        button {
+            padding: 12px 20px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #result {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #007bff;
+        }
+        .error {
+            color: red;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Фретти-Спин</h1>
+        <p class="description">Выбери количество струн и ладов, укажи диапазон струн (например, 3 или 2-4), затем нажми на кнопку, чтобы получить задание для тренировки гаммы:</p>
+
+        <form id="guitarForm">
+            <div class="form-group">
+                <div class="form-row">
+                    <label for="strings">Количество струн:</label>
+                    <select id="strings">
+                        <option value="6" selected>6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <label for="frets">Количество ладов:</label>
+                    <select id="frets">
+                        <option value="12" selected>12</option> <!-- Дефолтное значение 12 -->
+                        <option value="22">22</option>
+                        <option value="24">24</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <label for="stringRange">Диапазон струн:</label>
+                    <input type="text" id="stringRange" value="1-6" placeholder="3 или 2-4">
+                </div>
+            </div>
+            <button type="submit">Крутануть</button>
+            <p id="result"></p>
+            <p id="error" class="error"></p>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const form = document.getElementById('guitarForm');
+            form.addEventListener('submit', function (event) {
+                event.preventDefault();
+                generateRandomStringAndFret();
+            });
+        });
+
+        function generateRandomStringAndFret() {
+            const numberOfStrings = parseInt(document.getElementById('strings').value);
+            const numberOfFrets = parseInt(document.getElementById('frets').value);
+            const stringRange = document.getElementById('stringRange').value.trim();
+            const errorElement = document.getElementById('error');
+            errorElement.innerText = '';
+
+            let minString, maxString;
+
+            if (stringRange.includes('-')) {
+                if (!stringRange.match(/^\d+-\d+$/)) {
+                    errorElement.innerText = 'Введите корректный диапазон (например, 2-4)';
+                    return;
+                }
+                [minString, maxString] = stringRange.split('-').map(Number);
+            } else {
+                if (!stringRange.match(/^\d+$/)) {
+                    errorElement.innerText = 'Введите корректный номер струны (например, 3)';
+                    return;
+                }
+                minString = maxString = parseInt(stringRange);
+            }
+
+            if (minString < 1 || maxString > numberOfStrings || minString > maxString) {
+                errorElement.innerText = `Диапазон струн должен быть от 1 до ${numberOfStrings}`;
+                return;
+            }
+
+            const randomString = Math.floor(Math.random() * (maxString - minString + 1)) + minString;
+            const randomFret = Math.floor(Math.random() * (numberOfFrets + 1));
+
+            document.getElementById('result').innerText = `Струна: ${randomString}, Лад: ${randomFret}`;
+        }
+    </script>
+</body>
+</html>
