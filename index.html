@@ -16,6 +16,7 @@
             min-height: 100vh;
             padding: 20px;
             box-sizing: border-box;
+            overflow: hidden;
         }
         h1 {
             color: #444;
@@ -29,7 +30,9 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             text-align: center;
             width: 100%;
-            max-width: 400px; /* Оптимальная ширина для мобилок */
+            max-width: 400px;
+            max-height: 90vh;
+            overflow-y: auto;
         }
         .description {
             font-size: 16px;
@@ -106,14 +109,14 @@
                 <div class="form-row">
                     <label for="frets">Количество ладов:</label>
                     <select id="frets">
-                        <option value="12" selected>12</option> <!-- Дефолтное значение 12 -->
+                        <option value="12" selected>12</option>
                         <option value="22">22</option>
                         <option value="24">24</option>
                     </select>
                 </div>
                 <div class="form-row">
                     <label for="stringRange">Диапазон струн:</label>
-                    <input type="text" id="stringRange" value="1-6" placeholder="3 или 2-4">
+                    <input type="text" id="stringRange" value="1-6" placeholder="например 3 или 2-4">
                 </div>
             </div>
             <button type="submit">Крутануть</button>
@@ -123,39 +126,29 @@
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', () => {
             const form = document.getElementById('guitarForm');
-            form.addEventListener('submit', function (event) {
+            form.addEventListener('submit', (event) => {
                 event.preventDefault();
                 generateRandomStringAndFret();
             });
         });
 
-        function generateRandomStringAndFret() {
+        const generateRandomStringAndFret = () => {
             const numberOfStrings = parseInt(document.getElementById('strings').value);
             const numberOfFrets = parseInt(document.getElementById('frets').value);
             const stringRange = document.getElementById('stringRange').value.trim();
             const errorElement = document.getElementById('error');
-            errorElement.innerText = '';
 
-            let minString, maxString;
-
-            if (stringRange.includes('-')) {
-                if (!stringRange.match(/^\d+-\d+$/)) {
-                    errorElement.innerText = 'Введите корректный диапазон (например, 2-4)';
-                    return;
-                }
-                [minString, maxString] = stringRange.split('-').map(Number);
-            } else {
-                if (!stringRange.match(/^\d+$/)) {
-                    errorElement.innerText = 'Введите корректный номер струны (например, 3)';
-                    return;
-                }
-                minString = maxString = parseInt(stringRange);
+            if (!/^\d+(-\d+)?$/.test(stringRange)) {
+                errorElement.innerText = 'Введите корректный номер струны (например, 3) или диапазон (например, 2-4).';
+                return;
             }
 
+            const [minString, maxString = minString] = stringRange.split('-').map(Number);
+
             if (minString < 1 || maxString > numberOfStrings || minString > maxString) {
-                errorElement.innerText = `Диапазон струн должен быть от 1 до ${numberOfStrings}`;
+                errorElement.innerText = `Диапазон струн должен быть от 1 до ${numberOfStrings}.`;
                 return;
             }
 
@@ -163,7 +156,7 @@
             const randomFret = Math.floor(Math.random() * (numberOfFrets + 1));
 
             document.getElementById('result').innerText = `Струна: ${randomString}, Лад: ${randomFret}`;
-        }
+        };
     </script>
 </body>
 </html>
