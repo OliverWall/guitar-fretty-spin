@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Фретти-Спин - гитарный рандомайзер заданий для тренировки гамм - (Guitar fretty spin)</title>
-    <meta name="description" content="Фретти-Спин (Guitar Fretty Spin) генерирует случайные задания для тренировки гамм. Просто выбери настройки, крутани рулетку — и получи задание" />
+    <title>Фретти-Спин - гитарный рандомайзер заданий для тернировки гамм - (Guitar fretty spin)</title>
+    <meta name="description" content="Фретти-Спин (Guitar Fretty Spin) генерирует случайные задания для отработки гамм. Просто выбери настройки, крутани рулетку — и получи задание" />
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -114,7 +114,7 @@
 <body>
     <div class="container">
         <h1>Фретти-Спин</h1>
-        <p class="description">Генерирует случайные задания для тренировки гамм. </br/> Просто выбери настройки, крутани рулетку — и получи задание</p>
+        <p class="description">Генерирует случайные задания для отработки гамм. </br/> Просто выбери настройки, крутани рулетку — и получи задание</p>
         <form id="guitarForm">
             <div class="form-group">
                 <div class="form-row">
@@ -134,8 +134,8 @@
                     </select>
                 </div>
                 <div class="form-row">
-                    <label for="stringRange">Диапазон струн (например 3 или 2-4):</label>
-                    <input type="text" id="stringRange" value="1-6" placeholder="Введите значение - например 3 или 2-4">
+                    <label for="stringRange">Диапазон струн:</label>
+                    <input type="text" id="stringRange" value="1-6" placeholder="например 3 или 2-4">
                 </div>
             </div>
             <button type="submit">Крутануть</button>
@@ -184,11 +184,12 @@
 
             const randomString = Math.floor(Math.random() * (maxString - minString + 1)) + minString;
             const randomFret = Math.floor(Math.random() * (numberOfFrets + 1));
+            const randomBox = Math.floor(Math.random() * 3 + 1);
 
             const scales = ['минор', 'мажор'];
             const randomScale = scales[Math.floor(Math.random() * scales.length)];
 
-            document.getElementById('result').innerText = `Струна: ${randomString}, Лад: ${randomFret}, Гамма: ${randomScale}`;
+            document.getElementById('result').innerText = `Сыграй  ${randomBox} бокс ${randomScale}ой гаммы от ${randomString} струны ${randomFret} лада`;
         };
     </script>
 </body>
